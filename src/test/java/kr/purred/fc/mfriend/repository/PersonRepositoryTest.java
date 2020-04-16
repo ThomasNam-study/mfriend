@@ -23,6 +23,7 @@ class PersonRepositoryTest
 
 		person.setName ("TESTER!!");
 		person.setAge (20);
+		person.setBloodType ("A");
 
 		personRepository.save (person);
 
@@ -32,5 +33,6 @@ class PersonRepositoryTest
 		assertThat(persons.size ()).isEqualTo (1);
 		assertThat(persons.get (0).getName ()).isEqualTo ("TESTER!!");
 		assertThat(persons.get (0).getAge ()).isEqualTo (20);
+		assertThat(persons.get (0).getBloodType ()).isEqualTo ("A");
 	}
 }
