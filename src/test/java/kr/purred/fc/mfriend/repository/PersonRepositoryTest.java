@@ -35,4 +35,11 @@ class PersonRepositoryTest
 		assertThat(persons.get (0).getAge ()).isEqualTo (20);
 		assertThat(persons.get (0).getBloodType ()).isEqualTo ("A");
 	}
+
+	@Test
+	void hashTest ()
+	{
+		Person test1 = new Person ("Test", 10);
+		Person test2 = new Person ("Test", 10);
+	}
 }
