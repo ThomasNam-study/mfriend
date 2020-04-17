@@ -39,7 +39,7 @@ class PersonRepositoryTest
 	@Test
 	void hashTest ()
 	{
-		Person test1 = new Person ("Test", 10);
-		Person test2 = new Person ("Test", 10);
+		Person test1 = new Person ("Test", 10, "A");
+		Person test2 = new Person ("Test", 10, "B");
 	}
 }

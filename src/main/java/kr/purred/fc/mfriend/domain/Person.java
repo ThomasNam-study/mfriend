@@ -5,6 +5,7 @@ import lombok.*;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import java.time.LocalDate;
 
 @Entity
@@ -26,6 +27,7 @@ public class Person
 
 	private String hobby;
 
+	@NonNull
 	private String bloodType;
 
 	private String address;
@@ -37,5 +39,6 @@ public class Person
 	@ToString.Exclude
 	private String phoneNumber;
 
-
+	@OneToOne
+	private Block block;
 }
