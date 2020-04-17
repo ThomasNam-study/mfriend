@@ -38,6 +38,38 @@ class PersonServiceTest
 	}
 
 	@Test
+	void bloodTypeTest ()
+	{
+		givenPerson ("martin", 10, "A");
+		givenPerson ("david", 9, "B");
+		givenPerson ("runa", 9, "AB");
+
+		List<Person> list = personService.getPeopleByBloodType ("A");
+
+		list.forEach (System.out::println);
+	}
+
+	@Test
+	void birthdayTest ()
+	{
+		givenPerson2 ("martin", 10, "A", LocalDate.of (1982, 10, 10));
+		givenPerson2 ("david", 9, "B", LocalDate.of (1992, 10, 10));
+		givenPerson2 ("runa", 9, "AB", LocalDate.of (2003, 10, 10));
+
+		List<Person> list = personRepository.findByBirthdayBetween (LocalDate.of (1991, 8, 1), LocalDate.of (2002, 8, 1));
+
+		list.forEach (System.out::println);
+	}
+
+	@Test
+	void getPeopleByName ()
+	{
+		List<Person> lists = personService.getPeopleByName ("martin");
+
+		lists.stream ().forEach (System.out::println);
+	}
+
+	@Test
 	void cascadeTest ()
 	{
 		givenPeople ();
@@ -109,5 +141,13 @@ class PersonServiceTest
 	private void givenPerson (String name, int age, String bloodType)
 	{
 		personRepository.save (new Person (name, age, bloodType));
+	}
+
+	private void givenPerson2 (String name, int age, String bloodType, LocalDate birthday)
+	{
+		Person person = new Person (name, age, bloodType);
+
+		person.setBirthday (birthday);
+		personRepository.save (person);
 	}
 }
