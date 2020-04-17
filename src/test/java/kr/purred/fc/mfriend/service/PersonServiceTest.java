@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @SpringBootTest
@@ -36,6 +37,45 @@ class PersonServiceTest
 		personList.forEach (System.out::println);
 	}
 
+	@Test
+	void cascadeTest ()
+	{
+		givenPeople ();
+
+		List<Person> personList = personRepository.findAll ();
+
+		Person person = personList.get (2);
+
+		person.getBlock ().setStartDate (LocalDate.now ());
+		person.getBlock ().setEndDate (LocalDate.now ());
+
+		personRepository.save (person);
+
+		// MERGE 적용 후 동작
+		// personRepository.findAll ().forEach (System.out::println);
+
+		/*personRepository.delete (person);
+		personRepository.findAll ().forEach (System.out::println);
+		blockRepository.findAll ().forEach (System.out::println);*/
+
+		person.setBlock (null);
+
+		personRepository.save (person);
+
+		personRepository.findAll ().forEach (System.out::println);
+		blockRepository.findAll ().forEach (System.out::println);
+	}
+
+	@Test
+	void getPerson ()
+	{
+		givenPeople ();
+
+		Person person = personService.getPerson (3L);
+
+		//System.out.println (person);
+	}
+
 	private void givenPeople ()
 	{
 		givenPerson ("martin", 10, "A");
@@ -50,7 +90,8 @@ class PersonServiceTest
 	{
 		Person blockPerson = new Person (name, age, bloodType);
 
-		blockPerson.setBlock (givenBlock (name));
+		// blockPerson.setBlock (givenBlock (name));
+		blockPerson.setBlock (new Block (name));
 
 		personRepository.save (blockPerson);
 	}
