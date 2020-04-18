@@ -21,25 +21,25 @@ class PersonRepositoryTest
 	{
 		Person person = new Person ();
 
-		person.setName ("TESTER!!");
+		person.setName ("john");
 		person.setAge (20);
 		person.setBloodType ("A");
 
 		personRepository.save (person);
 
 		// System.out.println (personRepository.findAll ());
-		List<Person> persons = personRepository.findAll ();
+		List<Person> persons = personRepository.findByName ("john");
 
 		assertThat(persons.size ()).isEqualTo (1);
-		assertThat(persons.get (0).getName ()).isEqualTo ("TESTER!!");
+		assertThat(persons.get (0).getName ()).isEqualTo ("john");
 		assertThat(persons.get (0).getAge ()).isEqualTo (20);
 		assertThat(persons.get (0).getBloodType ()).isEqualTo ("A");
 	}
 
-	@Test
+	/*@Test
 	void hashTest ()
 	{
 		Person test1 = new Person ("Test", 10, "A");
 		Person test2 = new Person ("Test", 10, "B");
-	}
+	}*/
 }

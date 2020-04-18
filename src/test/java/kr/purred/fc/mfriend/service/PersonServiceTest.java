@@ -13,6 +13,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.time.LocalDate;
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 @SpringBootTest
 class PersonServiceTest
 {
@@ -28,8 +30,8 @@ class PersonServiceTest
 	@Test
 	void getPeopleExcludeBlocks ()
 	{
-		givenPeople ();
-		givenBlocks ();
+		//givenPeople ();
+		//givenBlocks ();
 
 		List<Person> personList = personService.getPeopleExcludeBlocks ();
 
@@ -41,21 +43,21 @@ class PersonServiceTest
 	@Test
 	void bloodTypeTest ()
 	{
-		givenPerson ("martin", 10, "A");
+		/*givenPerson ("martin", 10, "A");
 		givenPerson ("david", 9, "B");
-		givenPerson ("runa", 9, "AB");
+		givenPerson ("runa", 9, "AB");*/
 
 		List<Person> list = personService.getPeopleByBloodType ("A");
 
-		list.forEach (System.out::println);
+		assertThat(list.size ()).isEqualTo (2);
 	}
 
 	@Test
 	void birthdayTest ()
 	{
-		givenPerson2 ("martin", 10, "A", LocalDate.of (1982, 7, 10));
+		/*givenPerson2 ("martin", 10, "A", LocalDate.of (1982, 7, 10));
 		givenPerson2 ("david", 9, "B", LocalDate.of (1992, 8, 10));
-		givenPerson2 ("runa", 9, "AB", LocalDate.of (2003, 10, 10));
+		givenPerson2 ("runa", 9, "AB", LocalDate.of (2003, 10, 10));*/
 
 		// List<Person> list = personRepository.findByBirthdayBetween (LocalDate.of (1991, 8, 1), LocalDate.of (2002, 8, 1));
 		List<Person> list = personRepository.findByMonthOfBirthday (8);
@@ -75,7 +77,7 @@ class PersonServiceTest
 		lists.stream ().forEach (System.out::println);
 	}
 
-	@Test
+	/*@Test
 	void cascadeTest ()
 	{
 		givenPeople ();
@@ -92,9 +94,9 @@ class PersonServiceTest
 		// MERGE 적용 후 동작
 		// personRepository.findAll ().forEach (System.out::println);
 
-		/*personRepository.delete (person);
+		*//*personRepository.delete (person);
 		personRepository.findAll ().forEach (System.out::println);
-		blockRepository.findAll ().forEach (System.out::println);*/
+		blockRepository.findAll ().forEach (System.out::println);*//*
 
 		person.setBlock (null);
 
@@ -102,19 +104,17 @@ class PersonServiceTest
 
 		personRepository.findAll ().forEach (System.out::println);
 		blockRepository.findAll ().forEach (System.out::println);
-	}
+	}*/
 
 	@Test
 	void getPerson ()
 	{
-		givenPeople ();
-
 		Person person = personService.getPerson (3L);
 
-		//System.out.println (person);
+		assertThat(person).isNotNull ();
 	}
 
-	private void givenPeople ()
+	/*private void givenPeople ()
 	{
 		givenPerson ("martin", 10, "A");
 		givenPerson ("david", 9, "B");
@@ -122,7 +122,7 @@ class PersonServiceTest
 		givenBlockPerson ("Dennis", 15, "AB");
 		// givenPerson ("martin", 11, "AB");
 		givenBlockPerson ("martin", 11, "AB");
-	}
+	}*/
 
 	private void givenBlockPerson (String name, int age, String bloodType)
 	{
@@ -134,27 +134,27 @@ class PersonServiceTest
 		personRepository.save (blockPerson);
 	}
 
-	private void givenBlocks ()
+	/*private void givenBlocks ()
 	{
 		givenBlock ("martin");
-	}
+	}*/
 
-	private Block givenBlock (String name)
+	/*private Block givenBlock (String name)
 	{
 		return blockRepository.save (new Block (name));
-	}
+	}*/
 
-	private void givenPerson (String name, int age, String bloodType)
+	/*private void givenPerson (String name, int age, String bloodType)
 	{
 		personRepository.save (new Person (name, age, bloodType));
-	}
+	}*/
 
-	private void givenPerson2 (String name, int age, String bloodType, LocalDate birthday)
+	/*private void givenPerson2 (String name, int age, String bloodType, LocalDate birthday)
 	{
 		Person person = new Person (name, age, bloodType);
 
 		// person.setBirthday (birthday);
 		person.setBirthday (new Birthday (birthday));
 		personRepository.save (person);
-	}
+	}*/
 }

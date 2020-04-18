@@ -15,15 +15,15 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class Birthday
 {
-	private int year;
+	private Integer year;
 
 	@Min (1)
 	@Max (12)
-	private int month;
+	private Integer month;
 
 	@Min (1)
 	@Max (31)
-	private int day;
+	private Integer day;
 
 	public Birthday (LocalDate date)
 	{
