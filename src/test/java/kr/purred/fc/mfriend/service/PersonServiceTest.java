@@ -2,6 +2,7 @@ package kr.purred.fc.mfriend.service;
 
 import kr.purred.fc.mfriend.domain.Block;
 import kr.purred.fc.mfriend.domain.Person;
+import kr.purred.fc.mfriend.domain.dto.Birthday;
 import kr.purred.fc.mfriend.repository.BlockRepository;
 import kr.purred.fc.mfriend.repository.PersonRepository;
 import net.bytebuddy.asm.Advice;
@@ -52,11 +53,16 @@ class PersonServiceTest
 	@Test
 	void birthdayTest ()
 	{
-		givenPerson2 ("martin", 10, "A", LocalDate.of (1982, 10, 10));
-		givenPerson2 ("david", 9, "B", LocalDate.of (1992, 10, 10));
+		givenPerson2 ("martin", 10, "A", LocalDate.of (1982, 7, 10));
+		givenPerson2 ("david", 9, "B", LocalDate.of (1992, 8, 10));
 		givenPerson2 ("runa", 9, "AB", LocalDate.of (2003, 10, 10));
 
-		List<Person> list = personRepository.findByBirthdayBetween (LocalDate.of (1991, 8, 1), LocalDate.of (2002, 8, 1));
+		// List<Person> list = personRepository.findByBirthdayBetween (LocalDate.of (1991, 8, 1), LocalDate.of (2002, 8, 1));
+		List<Person> list = personRepository.findByMonthOfBirthday (8);
+
+		list.forEach (System.out::println);
+
+		list = personRepository.findByMonthOfBirthdayAndDay (8, 10);
 
 		list.forEach (System.out::println);
 	}
@@ -147,7 +153,8 @@ class PersonServiceTest
 	{
 		Person person = new Person (name, age, bloodType);
 
-		person.setBirthday (birthday);
+		// person.setBirthday (birthday);
+		person.setBirthday (new Birthday (birthday));
 		personRepository.save (person);
 	}
 }

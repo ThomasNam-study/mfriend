@@ -1,8 +1,10 @@
 package kr.purred.fc.mfriend.domain;
 
+import kr.purred.fc.mfriend.domain.dto.Birthday;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.Valid;
 import java.time.LocalDate;
 
 @Entity
@@ -29,7 +31,10 @@ public class Person
 
 	private String address;
 
-	private LocalDate birthday;
+	// private LocalDate birthday;
+	@Embedded
+	@Valid
+	private Birthday birthday;
 
 	private String job;
 
