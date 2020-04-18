@@ -20,8 +20,6 @@ public class Block
 	@GeneratedValue
 	private Long id;
 
-	private boolean block;
-
 	@NonNull
 	private String name;
 
