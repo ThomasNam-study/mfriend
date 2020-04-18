@@ -57,4 +57,10 @@ public class PersonService
 	{
 		return personRepository.findByBloodType (bloodType);
 	}
+
+	@Transactional
+	public void addPerson (Person person)
+	{
+		personRepository.save (person);
+	}
 }
