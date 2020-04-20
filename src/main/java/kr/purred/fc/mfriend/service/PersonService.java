@@ -2,6 +2,8 @@ package kr.purred.fc.mfriend.service;
 
 import kr.purred.fc.mfriend.domain.Block;
 import kr.purred.fc.mfriend.domain.Person;
+import kr.purred.fc.mfriend.domain.dto.Birthday;
+import kr.purred.fc.mfriend.dto.PersonDto;
 import kr.purred.fc.mfriend.repository.BlockRepository;
 import kr.purred.fc.mfriend.repository.PersonRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -61,6 +63,29 @@ public class PersonService
 	@Transactional
 	public void addPerson (Person person)
 	{
+		personRepository.save (person);
+	}
+
+	@Transactional
+	public void modifyPerson (Long id, PersonDto personDto)
+	{
+		Person person = personRepository.findById (id).orElseThrow (() -> new RuntimeException ("아이디가 존재 하지 않음"));
+
+		if (!person.getName ().equals (personDto.getName ()))
+			new RuntimeException ("이름이 드랍니다.");
+
+		person.set (personDto);
+
+		personRepository.save (person);
+	}
+
+	@Transactional
+	public void modifyPerson (Long id, String name)
+	{
+		Person person = personRepository.findById (id).orElseThrow (() -> new RuntimeException ("아이디가 존재 하지 않음"));
+
+		person.setName (name);
+
 		personRepository.save (person);
 	}
 }

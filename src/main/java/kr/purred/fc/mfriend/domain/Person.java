@@ -1,7 +1,9 @@
 package kr.purred.fc.mfriend.domain;
 
 import kr.purred.fc.mfriend.domain.dto.Birthday;
+import kr.purred.fc.mfriend.dto.PersonDto;
 import lombok.*;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
 import javax.validation.Valid;
@@ -54,4 +56,31 @@ public class Person
 	@OneToOne(cascade = CascadeType.ALL)
 	@ToString.Exclude
 	private Block block;
+
+	public void set (PersonDto dto)
+	{
+		if (dto.getAge () > 0)
+			this.setAge (dto.getAge ());
+
+		if (!StringUtils.isEmpty (dto.getName ()))
+			this.setName (dto.getName ());
+
+		if (!StringUtils.isEmpty (dto.getJob ()))
+			this.setJob (dto.getJob ());
+
+		if (dto.getBirthday () != null)
+			this.setBirthday (new Birthday (dto.getBirthday ()));
+
+		if (!StringUtils.isEmpty (dto.getAddress ()))
+			this.setAddress (dto.getAddress ());
+
+		if (!StringUtils.isEmpty (dto.getBloodType ()))
+			this.setBloodType (dto.getBloodType ());
+
+		if (!StringUtils.isEmpty (dto.getPhoneNumber ()))
+			this.setPhoneNumber (dto.getPhoneNumber ());
+
+		if (!StringUtils.isEmpty (dto.getHobby ()))
+			this.setHobby (dto.getHobby ());
+	}
 }
