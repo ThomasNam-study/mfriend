@@ -1,8 +1,6 @@
 package kr.purred.fc.mfriend.service;
 
-import kr.purred.fc.mfriend.domain.Block;
 import kr.purred.fc.mfriend.domain.Person;
-import kr.purred.fc.mfriend.domain.dto.Birthday;
 import kr.purred.fc.mfriend.dto.PersonDto;
 import kr.purred.fc.mfriend.repository.BlockRepository;
 import kr.purred.fc.mfriend.repository.PersonRepository;
@@ -12,8 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -85,6 +81,18 @@ public class PersonService
 		Person person = personRepository.findById (id).orElseThrow (() -> new RuntimeException ("아이디가 존재 하지 않음"));
 
 		person.setName (name);
+
+		personRepository.save (person);
+	}
+
+	@Transactional
+	public void deletePerson (Long id)
+	{
+		// personRepository.deleteById (id);
+
+		Person person = personRepository.findById (id).orElseThrow (() -> new RuntimeException ("아이디가 존재 하지 않음"));
+
+		person.setDeleted (true);
 
 		personRepository.save (person);
 	}

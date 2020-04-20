@@ -3,19 +3,21 @@ package kr.purred.fc.mfriend.domain;
 import kr.purred.fc.mfriend.domain.dto.Birthday;
 import kr.purred.fc.mfriend.dto.PersonDto;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.Where;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
-import java.time.LocalDate;
 
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @RequiredArgsConstructor
 @Data
+@Where(clause = "deleted = false")
 public class Person
 {
 	@Id
@@ -49,6 +51,9 @@ public class Person
 
 	@ToString.Exclude
 	private String phoneNumber;
+
+	@ColumnDefault ("0")
+	private boolean deleted;
 
 	// @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
 	// @OneToOne(cascade = {CascadeType.ALL}, orphanRemoval = true, fetch = FetchType.EAGER, optional = false)
