@@ -55,5 +55,7 @@ public class PersonController
 		personService.deletePerson (id);
 
 		log.info ("person -> {}", personRepository.findAll ());
+
+		// return personRepository.findDeletePeople().stream().anyMatch((p) -> p.getId().equals(id));
 	}
 }
