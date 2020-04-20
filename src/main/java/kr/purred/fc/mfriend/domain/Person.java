@@ -9,7 +9,6 @@ import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
 import javax.validation.Valid;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 
 @Entity
@@ -28,10 +27,6 @@ public class Person
 	@NotEmpty
 	@Column(nullable = false)
 	private String name;
-
-	@NonNull
-	@Min(1)
-	private int age;
 
 	private String hobby;
 
@@ -64,9 +59,6 @@ public class Person
 
 	public void set (PersonDto dto)
 	{
-		if (dto.getAge () > 0)
-			this.setAge (dto.getAge ());
-
 		if (!StringUtils.isEmpty (dto.getName ()))
 			this.setName (dto.getName ());
 
@@ -87,5 +79,13 @@ public class Person
 
 		if (!StringUtils.isEmpty (dto.getHobby ()))
 			this.setHobby (dto.getHobby ());
+	}
+
+	public Integer getAge ()
+	{
+		if (birthday == null)
+			return null;
+
+		return birthday.age ();
 	}
 }

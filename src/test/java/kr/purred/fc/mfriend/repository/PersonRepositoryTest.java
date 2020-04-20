@@ -1,6 +1,7 @@
 package kr.purred.fc.mfriend.repository;
 
 import kr.purred.fc.mfriend.domain.Person;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,12 +18,12 @@ class PersonRepositoryTest
 	PersonRepository personRepository;
 
 	@Test
+	@Disabled
 	void crud ()
 	{
 		Person person = new Person ();
 
 		person.setName ("john");
-		person.setAge (20);
 		person.setBloodType ("A");
 
 		personRepository.save (person);

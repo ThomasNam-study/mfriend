@@ -124,9 +124,9 @@ class PersonServiceTest
 		givenBlockPerson ("martin", 11, "AB");
 	}*/
 
-	private void givenBlockPerson (String name, int age, String bloodType)
+	private void givenBlockPerson (String name, String bloodType)
 	{
-		Person blockPerson = new Person (name, age, bloodType);
+		Person blockPerson = new Person (name,  bloodType);
 
 		// blockPerson.setBlock (givenBlock (name));
 		blockPerson.setBlock (new Block (name));
