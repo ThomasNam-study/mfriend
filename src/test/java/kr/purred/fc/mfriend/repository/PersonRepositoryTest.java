@@ -24,7 +24,6 @@ class PersonRepositoryTest
 		Person person = new Person ();
 
 		person.setName ("john");
-		person.setBloodType ("A");
 
 		personRepository.save (person);
 
@@ -34,7 +33,6 @@ class PersonRepositoryTest
 		assertThat(persons.size ()).isEqualTo (1);
 		assertThat(persons.get (0).getName ()).isEqualTo ("john");
 		assertThat(persons.get (0).getAge ()).isEqualTo (20);
-		assertThat(persons.get (0).getBloodType ()).isEqualTo ("A");
 	}
 
 	/*@Test

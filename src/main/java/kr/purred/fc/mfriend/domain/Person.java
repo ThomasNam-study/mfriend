@@ -30,11 +30,6 @@ public class Person
 
 	private String hobby;
 
-	@NonNull
-	@NotEmpty
-	@Column(nullable = false)
-	private String bloodType;
-
 	private String address;
 
 	// private LocalDate birthday;
@@ -44,18 +39,10 @@ public class Person
 
 	private String job;
 
-	@ToString.Exclude
 	private String phoneNumber;
 
 	@ColumnDefault ("0")
 	private boolean deleted;
-
-	// @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
-	// @OneToOne(cascade = {CascadeType.ALL}, orphanRemoval = true, fetch = FetchType.EAGER, optional = false)
-	// @OneToOne(cascade = {CascadeType.ALL}, orphanRemoval = true, fetch = FetchType.LAZY)
-	@OneToOne(cascade = CascadeType.ALL)
-	@ToString.Exclude
-	private Block block;
 
 	public void set (PersonDto dto)
 	{
@@ -70,9 +57,6 @@ public class Person
 
 		if (!StringUtils.isEmpty (dto.getAddress ()))
 			this.setAddress (dto.getAddress ());
-
-		if (!StringUtils.isEmpty (dto.getBloodType ()))
-			this.setBloodType (dto.getBloodType ());
 
 		if (!StringUtils.isEmpty (dto.getPhoneNumber ()))
 			this.setPhoneNumber (dto.getPhoneNumber ());

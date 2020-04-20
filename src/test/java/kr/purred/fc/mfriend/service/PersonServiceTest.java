@@ -24,34 +24,6 @@ class PersonServiceTest
 	@Autowired
 	private PersonRepository personRepository;
 
-	@Autowired
-	private BlockRepository blockRepository;
-
-	@Test
-	void getPeopleExcludeBlocks ()
-	{
-		//givenPeople ();
-		//givenBlocks ();
-
-		List<Person> personList = personService.getPeopleExcludeBlocks ();
-
-		// System.out.println (personList);
-
-		personList.forEach (System.out::println);
-	}
-
-	@Test
-	void bloodTypeTest ()
-	{
-		/*givenPerson ("martin", 10, "A");
-		givenPerson ("david", 9, "B");
-		givenPerson ("runa", 9, "AB");*/
-
-		List<Person> list = personService.getPeopleByBloodType ("A");
-
-		assertThat(list.size ()).isEqualTo (2);
-	}
-
 	@Test
 	void birthdayTest ()
 	{
@@ -123,16 +95,6 @@ class PersonServiceTest
 		// givenPerson ("martin", 11, "AB");
 		givenBlockPerson ("martin", 11, "AB");
 	}*/
-
-	private void givenBlockPerson (String name, String bloodType)
-	{
-		Person blockPerson = new Person (name,  bloodType);
-
-		// blockPerson.setBlock (givenBlock (name));
-		blockPerson.setBlock (new Block (name));
-
-		personRepository.save (blockPerson);
-	}
 
 	/*private void givenBlocks ()
 	{

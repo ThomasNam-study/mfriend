@@ -89,7 +89,5 @@ class PersonControllerTest
 				.andDo (print())
 				.andExpect (status ().isOk ())
 		;
-
-		System.out.println (personRepository.findByBlockIsNull ());
 	}
 }
