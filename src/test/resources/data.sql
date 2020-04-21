@@ -1,4 +1,4 @@
-insert into person(`id`, `name`, `year`, `month`, `day`, `job`) values(1, 'martin', 1991, 8, 16, 'Programmer');
+insert into person(`id`, `name`, `year`, `month`, `day`, `job`) values(1, 'martin', 1991, 8, 15, 'Programmer');
 insert into person(`id`, `name`, `year`, `month`, `day`) values(2, 'david', 1994, 4, 1);
 insert into person(`id`, `name`, `year`, `month`, `day`) values(3, 'dennis', 1998, 7, 21);
 insert into person(`id`, `name`, `year`, `month`, `day`) values(4, 'sophia', 2000, 8, 10);
