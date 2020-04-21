@@ -49,6 +49,16 @@
             </table>
         </div>
 
+        <nav aria-label="Page navigation" style="text-align: center;">
+
+            <ul class="pagination">
+                <li><a href="/board/list?page=1">&laquo;</a></li>
+
+                <li><a th:href="@{/board/list(page=${boardList.totalPages})}">&raquo;</a></li>
+            </ul>
+
+        </nav>
+
 
     </div>
 
