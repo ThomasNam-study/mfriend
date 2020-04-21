@@ -37,8 +37,13 @@ public class PersonService
 	}
 
 	@Transactional
-	public void addPerson (Person person)
+	public void addPerson (PersonDto personDto)
 	{
+		Person person = new Person();
+
+		person.set(personDto);
+		person.setName(personDto.getName());
+
 		personRepository.save (person);
 	}
 

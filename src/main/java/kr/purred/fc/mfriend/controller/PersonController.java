@@ -26,11 +26,11 @@ public class PersonController
 
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public void postPerson (@RequestBody Person person)
+	public void postPerson (@RequestBody PersonDto personDto)
 	{
-		log.info ("{}", person);
+		log.info ("{}", personDto);
 
-		personService.addPerson (person);
+		personService.addPerson (personDto);
 	}
 
 	@PutMapping("/{id}")

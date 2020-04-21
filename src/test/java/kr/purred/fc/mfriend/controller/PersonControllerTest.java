@@ -11,6 +11,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.test.web.servlet.MockMvc;
@@ -67,15 +68,29 @@ class PersonControllerTest
 	@Test
 	void postPerson () throws Exception
 	{
+		PersonDto dto = new PersonDto();
+
+		dto.setName("martin");
+		dto.setBirthday(LocalDate.now());
+		dto.setAddress("Seoul");
+		dto.setHobby("Programming");
+		dto.setPhoneNumber("010-5349-6254");
+
 		mockMvc.perform (MockMvcRequestBuilders.post ("/api/person")
 				.contentType (MediaType.APPLICATION_JSON)
-				.content ("{\n" +
-						"    \"name\": \"martin2\", \"age\": \"20\", \"bloodType\": \"A\"\n" +
-						"}")
+				.content (toJsonString(dto))
 		)
 			.andDo (print())
 			.andExpect (status ().isCreated ())
-				;
+		;
+
+		Person person = personRepository.findAll(Sort.by(Sort.Direction.DESC, "id")).get(0);
+
+		assertAll(
+				() -> Assertions.assertThat(person.getName ()).isEqualTo("martin"),
+				() -> Assertions.assertThat(person.getHobby ()).isEqualTo("Programming"),
+				() -> Assertions.assertThat(person.getAddress ()).isEqualTo("Seoul")
+		);
 	}
 
 	@Test
