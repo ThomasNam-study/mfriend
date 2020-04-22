@@ -53,7 +53,7 @@ public class PersonService
 		Person person = personRepository.findById (id).orElseThrow (() -> new RuntimeException ("아이디가 존재 하지 않음"));
 
 		if (!person.getName ().equals (personDto.getName ()))
-			throw new RuntimeException ("이름이 드랍니다.");
+			throw new RuntimeException ("이름이 다릅니다.");
 
 		person.set (personDto);
 

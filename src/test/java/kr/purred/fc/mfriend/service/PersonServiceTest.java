@@ -10,6 +10,7 @@ import net.bytebuddy.asm.Advice;
 import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentMatcher;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -22,6 +23,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -63,6 +65,59 @@ class PersonServiceTest
 	}
 
 	@Test
+	void modifyIfPersonNotFound ()
+	{
+		when(personRepository.findById(1L))
+				.thenReturn(Optional.empty());
+
+		PersonDto dto = new PersonDto();
+
+		dto.setName("martin");
+		dto.setBirthday(LocalDate.now());
+		dto.setAddress("Seoul");
+		dto.setHobby("Programming");
+		dto.setPhoneNumber("010-5349-6254");
+
+		assertThrows(RuntimeException.class, () -> personService.modifyPerson (1L, dto));
+	}
+
+	@Test
+	void modifyIfPersonDiff ()
+	{
+		when(personRepository.findById(1L))
+				.thenReturn(Optional.of(new Person("tony")));
+
+		PersonDto dto = new PersonDto();
+
+		dto.setName("martin");
+		dto.setBirthday(LocalDate.now());
+		dto.setAddress("Seoul");
+		dto.setHobby("Programming");
+		dto.setPhoneNumber("010-5349-6254");
+
+		assertThrows(RuntimeException.class, () -> personService.modifyPerson (1L, dto));
+	}
+
+	@Test
+	void modify ()
+	{
+		when(personRepository.findById(1L))
+				.thenReturn(Optional.of(new Person("martin")));
+
+		PersonDto dto = new PersonDto();
+
+		dto.setName("martin");
+		dto.setBirthday(LocalDate.now());
+		dto.setAddress("Seoul");
+		dto.setHobby("Programming");
+		dto.setPhoneNumber("010-5349-6254");
+
+		personService.modifyPerson (1L, dto);
+
+		verify (personRepository, times(1)).save (any(Person.class));
+	}
+
+	@Test
 	void put ()
 	{
 		PersonDto dto = new PersonDto();
@@ -76,9 +131,8 @@ class PersonServiceTest
 		personService.addPerson(dto);
 
 		verify(personRepository, times(1)).save(any(Person.class));
+		verify(personRepository, times(1)).save(argThat (new IsPersonWillBeUpdated ()));
 	}
-
-
 
 	@Test
 	void birthdayTest ()
@@ -180,4 +234,13 @@ class PersonServiceTest
 		person.setBirthday (new Birthday (birthday));
 		personRepository.save (person);
 	}*/
+
+	private static class IsPersonWillBeUpdated implements ArgumentMatcher<Person>
+	{
+		@Override
+		public boolean matches (Person person)
+		{
+			return person.getName ().equals ("martin") && person.getHobby ().equals ("Programming") && person.getPhoneNumber ().equals ("010-5349-6254");
+		}
+	}
 }
