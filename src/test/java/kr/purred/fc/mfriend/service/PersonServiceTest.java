@@ -235,12 +235,70 @@ class PersonServiceTest
 		personRepository.save (person);
 	}*/
 
+
+
+	@Test
+	void modifyByNameIfPersonNotFound ()
+	{
+		when(personRepository.findById(1L)).thenReturn(Optional.empty());
+
+		assertThrows(RuntimeException.class, () -> personService.modifyPerson(1L, "우하하"));
+	}
+
+	@Test
+	void modifyByName ()
+	{
+		when(personRepository.findById(1L))
+				.thenReturn(Optional.of(new Person("martin")));
+
+		personService.modifyPerson(1L, "dany");
+
+		verify(personRepository).save(argThat(new IsPersonWillBeNameUpdated()));
+	}
+
+	@Test
+	void deleteByIfPersonNotFound ()
+	{
+		when(personRepository.findById(1L)).thenReturn(Optional.empty());
+
+		assertThrows(RuntimeException.class, () -> personService.deletePerson(1L));
+	}
+
+	@Test
+	void deleteByIfPersonFound ()
+	{
+		when(personRepository.findById(1L))
+				.thenReturn(Optional.of(new Person("martin")));
+
+		personService.deletePerson(1L);
+
+		verify(personRepository, times(1)).save(argThat(new IsPersonWillDeleted ()));
+	}
+
 	private static class IsPersonWillBeUpdated implements ArgumentMatcher<Person>
 	{
 		@Override
 		public boolean matches (Person person)
 		{
 			return person.getName ().equals ("martin") && person.getHobby ().equals ("Programming") && person.getPhoneNumber ().equals ("010-5349-6254");
+		}
+	}
+
+	private static class IsPersonWillBeNameUpdated implements ArgumentMatcher<Person>
+	{
+		@Override
+		public boolean matches (Person person)
+		{
+			return person.getName ().equals ("dany");
+		}
+	}
+
+	private static class IsPersonWillDeleted implements ArgumentMatcher<Person>
+	{
+		@Override
+		public boolean matches (Person person)
+		{
+			return person.isDeleted();
 		}
 	}
 }
