@@ -22,6 +22,7 @@ import org.springframework.web.context.WebApplicationContext;
 import java.time.LocalDate;
 import java.util.Optional;
 
+import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -62,6 +63,22 @@ class PersonControllerTest
 		mockMvc = MockMvcBuilders.webAppContextSetup (wac)
 				.alwaysDo(print())
 				.build ();
+	}
+
+	@Test
+	void getAllTest () throws Exception
+	{
+		mockMvc.perform (MockMvcRequestBuilders.get ("/api/person")
+				.param ("page", "1")
+				.param ("size", "2")
+		)
+				.andExpect (status ().isOk ())
+				.andExpect (jsonPath ("$.totalPages").value (3))
+				.andExpect (jsonPath ("$.totalElements").value (6))
+				.andExpect (jsonPath ("$.content").value (hasSize (2)))
+				.andExpect (jsonPath ("$.content.[0].name").value ("dennis"))
+				.andExpect (jsonPath ("$.content.[1].name").value ("sophia"))
+		;
 	}
 
 	@Test
