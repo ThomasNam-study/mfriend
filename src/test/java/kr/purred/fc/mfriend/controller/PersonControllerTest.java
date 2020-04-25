@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import kr.purred.fc.mfriend.domain.Person;
 import kr.purred.fc.mfriend.dto.PersonDto;
 import kr.purred.fc.mfriend.repository.PersonRepository;
-import net.bytebuddy.asm.Advice;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,12 +16,12 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.util.NestedServletException;
 
 import java.time.LocalDate;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -46,14 +45,17 @@ class PersonControllerTest
 	@BeforeEach
 	void beforeEach ()
 	{
-		mockMvc = MockMvcBuilders.standaloneSetup (personController).setMessageConverters (messageConverter).build ();
+		mockMvc = MockMvcBuilders.standaloneSetup (personController)
+				.setMessageConverters (messageConverter)
+				.alwaysDo(print())
+				.build ();
 	}
 
 	@Test
 	void getPerson () throws Exception
 	{
 		mockMvc.perform (MockMvcRequestBuilders.get ("/api/person/1"))
-				.andDo (print())
+				//.andDo (print())
 				.andExpect (status ().isOk ())
 				.andExpect (jsonPath ("$.name").value ("martin"))
 				.andExpect (jsonPath ("$.hobby").isEmpty ())
@@ -80,7 +82,6 @@ class PersonControllerTest
 				.contentType (MediaType.APPLICATION_JSON)
 				.content (toJsonString(dto))
 		)
-			.andDo (print())
 			.andExpect (status ().isCreated ())
 		;
 
@@ -91,6 +92,21 @@ class PersonControllerTest
 				() -> Assertions.assertThat(person.getHobby ()).isEqualTo("Programming"),
 				() -> Assertions.assertThat(person.getAddress ()).isEqualTo("Seoul")
 		);
+	}
+
+	@Test
+	void postPersonIfNotException () throws Exception
+	{
+		PersonDto dto = new PersonDto();
+
+		mockMvc.perform (MockMvcRequestBuilders.post ("/api/person")
+				.contentType (MediaType.APPLICATION_JSON_UTF8)
+				.content (toJsonString(dto))
+		)
+				.andExpect (status ().isInternalServerError ())
+				.andExpect(jsonPath("$.code").value(500))
+		;
+
 	}
 
 	@Test
@@ -108,7 +124,7 @@ class PersonControllerTest
 				.contentType (MediaType.APPLICATION_JSON_UTF8)
 				.content (toJsonString(dto))
 		)
-				.andDo (print())
+				//.andDo (print())
 				.andExpect (status ().isOk ())
 		;
 
@@ -148,15 +164,36 @@ class PersonControllerTest
 		dto.setHobby("Programming");
 		dto.setPhoneNumber("010-5349-6254");
 
-		assertThrows(NestedServletException.class, () -> {
+		//assertThrows(NestedServletException.class, () -> {
 			mockMvc.perform(MockMvcRequestBuilders.put("/api/person/1")
 					.contentType(MediaType.APPLICATION_JSON_UTF8)
 					.content(toJsonString(dto))
 			)
-					.andDo(print())
-					.andExpect(status().isOk())
+				//	.andDo(print())
+					.andExpect(status().isBadRequest())
+					.andExpect(jsonPath("$.code").value(400))
 			;
-		});
+		//});
+	}
+
+	@Test
+	void modifyPersonIfPersonNotFound () throws Exception {
+		PersonDto dto = new PersonDto();
+
+		dto.setName("martin");
+		dto.setBirthday(LocalDate.now());
+		dto.setAddress("Seoul");
+		dto.setHobby("Programming");
+		dto.setPhoneNumber("010-5349-6254");
+
+		mockMvc.perform(MockMvcRequestBuilders.put("/api/person/10")
+				.contentType(MediaType.APPLICATION_JSON_UTF8)
+				.content(toJsonString(dto))
+		)
+				// .andDo(print())
+				.andExpect(status().isBadRequest())
+				.andExpect(jsonPath("$.code").value(400))
+		;
 	}
 
 	@Test
@@ -169,7 +206,7 @@ class PersonControllerTest
 		mockMvc.perform (MockMvcRequestBuilders.patch ("/api/person/" + id)
 				.param ("name", modifyName)
 		)
-				.andDo (print())
+				//.andDo (print())
 				.andExpect (status ().isOk ())
 		;
 
@@ -182,7 +219,7 @@ class PersonControllerTest
 		long id = 1;
 
 		mockMvc.perform (MockMvcRequestBuilders.delete ("/api/person/" + id))
-				.andDo (print())
+				//.andDo (print())
 				.andExpect (status ().isOk ())
 		;
 
