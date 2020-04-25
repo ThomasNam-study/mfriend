@@ -116,8 +116,42 @@ class PersonControllerTest
 				.contentType (MediaType.APPLICATION_JSON_UTF8)
 				.content (toJsonString(dto))
 		)
-				.andExpect (status ().isInternalServerError ())
-				.andExpect(jsonPath("$.code").value(500))
+				.andExpect (status ().isBadRequest ())
+				.andExpect(jsonPath("$.code").value(400))
+		;
+
+	}
+
+	@Test
+	void postPersonIfNameIsEmptyString () throws Exception
+	{
+		PersonDto dto = new PersonDto();
+
+		dto.setName("");
+
+		mockMvc.perform (MockMvcRequestBuilders.post ("/api/person")
+				.contentType (MediaType.APPLICATION_JSON_UTF8)
+				.content (toJsonString(dto))
+		)
+				.andExpect (status ().isBadRequest ())
+				.andExpect(jsonPath("$.code").value(400))
+		;
+
+	}
+
+	@Test
+	void postPersonIfNameIsBlankString () throws Exception
+	{
+		PersonDto dto = new PersonDto();
+
+		dto.setName(" ");
+
+		mockMvc.perform (MockMvcRequestBuilders.post ("/api/person")
+				.contentType (MediaType.APPLICATION_JSON_UTF8)
+				.content (toJsonString(dto))
+		)
+				.andExpect (status ().isBadRequest ())
+				.andExpect(jsonPath("$.code").value(400))
 		;
 
 	}
