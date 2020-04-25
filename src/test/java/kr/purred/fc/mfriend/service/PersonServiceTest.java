@@ -4,6 +4,8 @@ import kr.purred.fc.mfriend.domain.Block;
 import kr.purred.fc.mfriend.domain.Person;
 import kr.purred.fc.mfriend.domain.dto.Birthday;
 import kr.purred.fc.mfriend.dto.PersonDto;
+import kr.purred.fc.mfriend.exception.PersonNotFoundException;
+import kr.purred.fc.mfriend.exception.RenameNotPermittedException;
 import kr.purred.fc.mfriend.repository.BlockRepository;
 import kr.purred.fc.mfriend.repository.PersonRepository;
 import net.bytebuddy.asm.Advice;
@@ -95,7 +97,7 @@ class PersonServiceTest
 		dto.setHobby("Programming");
 		dto.setPhoneNumber("010-5349-6254");
 
-		assertThrows(RuntimeException.class, () -> personService.modifyPerson (1L, dto));
+		assertThrows(RenameNotPermittedException.class, () -> personService.modifyPerson (1L, dto));
 	}
 
 	@Test
@@ -242,7 +244,7 @@ class PersonServiceTest
 	{
 		when(personRepository.findById(1L)).thenReturn(Optional.empty());
 
-		assertThrows(RuntimeException.class, () -> personService.modifyPerson(1L, "우하하"));
+		assertThrows(PersonNotFoundException.class, () -> personService.modifyPerson(1L, "우하하"));
 	}
 
 	@Test

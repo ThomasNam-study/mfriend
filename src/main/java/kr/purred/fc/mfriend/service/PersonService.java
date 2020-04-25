@@ -2,6 +2,8 @@ package kr.purred.fc.mfriend.service;
 
 import kr.purred.fc.mfriend.domain.Person;
 import kr.purred.fc.mfriend.dto.PersonDto;
+import kr.purred.fc.mfriend.exception.PersonNotFoundException;
+import kr.purred.fc.mfriend.exception.RenameNotPermittedException;
 import kr.purred.fc.mfriend.repository.BlockRepository;
 import kr.purred.fc.mfriend.repository.PersonRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -50,10 +52,10 @@ public class PersonService
 	@Transactional
 	public void modifyPerson (Long id, PersonDto personDto)
 	{
-		Person person = personRepository.findById (id).orElseThrow (() -> new RuntimeException ("아이디가 존재 하지 않음"));
+		Person person = personRepository.findById (id).orElseThrow (PersonNotFoundException::new);
 
 		if (!person.getName ().equals (personDto.getName ()))
-			throw new RuntimeException ("이름이 다릅니다.");
+			throw new RenameNotPermittedException();
 
 		person.set (personDto);
 
@@ -63,7 +65,7 @@ public class PersonService
 	@Transactional
 	public void modifyPerson (Long id, String name)
 	{
-		Person person = personRepository.findById (id).orElseThrow (() -> new RuntimeException ("아이디가 존재 하지 않음"));
+		Person person = personRepository.findById (id).orElseThrow (PersonNotFoundException::new);
 
 		person.setName (name);
 
@@ -75,7 +77,7 @@ public class PersonService
 	{
 		// personRepository.deleteById (id);
 
-		Person person = personRepository.findById (id).orElseThrow (() -> new RuntimeException ("아이디가 존재 하지 않음"));
+		Person person = personRepository.findById (id).orElseThrow (PersonNotFoundException::new);
 
 		person.setDeleted (true);
 
