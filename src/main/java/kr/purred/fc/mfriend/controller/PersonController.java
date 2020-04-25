@@ -76,25 +76,5 @@ public class PersonController
 		// return personRepository.findDeletePeople().stream().anyMatch((p) -> p.getId().equals(id));
 	}
 
-	@ExceptionHandler(value = RenameNotPermittedException.class)
-	public ResponseEntity<ErrorResponse> handleRenameNotPermittedException (RenameNotPermittedException ex)
-	{
-		// return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
-		return new ResponseEntity<>(ErrorResponse.of(HttpStatus.BAD_REQUEST, ex.getMessage()), HttpStatus.BAD_REQUEST);
-	}
 
-	@ExceptionHandler(value = PersonNotFoundException.class)
-	public ResponseEntity<ErrorResponse> handlePersonNotFoundException (PersonNotFoundException ex)
-	{
-		// return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
-		return new ResponseEntity<>(ErrorResponse.of(HttpStatus.BAD_REQUEST, ex.getMessage()), HttpStatus.BAD_REQUEST);
-	}
-
-	@ExceptionHandler(value = RuntimeException.class)
-	public ResponseEntity<ErrorResponse> handleRuntimeException (RuntimeException ex)
-	{
-		// return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
-		log.error("서버 오류 : {}", ex.getMessage(), ex);
-		return new ResponseEntity<>(ErrorResponse.of(HttpStatus.INTERNAL_SERVER_ERROR, "알수 없는 서버 오류가 발생 하였습니다"), HttpStatus.INTERNAL_SERVER_ERROR);
-	}
 }

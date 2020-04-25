@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import kr.purred.fc.mfriend.domain.Person;
 import kr.purred.fc.mfriend.dto.PersonDto;
+import kr.purred.fc.mfriend.handler.GlobalExceptionHandler;
 import kr.purred.fc.mfriend.repository.PersonRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,6 +17,7 @@ import org.springframework.http.converter.json.MappingJackson2HttpMessageConvert
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 
 import java.time.LocalDate;
 import java.util.Optional;
@@ -37,7 +39,13 @@ class PersonControllerTest
 	@Autowired
 	ObjectMapper objectMapper;
 
+	@Autowired
+	GlobalExceptionHandler globalExceptionHandler;
+
 	private MockMvc mockMvc;
+
+	@Autowired
+	private WebApplicationContext wac;
 
 	@Autowired
 	private MappingJackson2HttpMessageConverter messageConverter;
@@ -45,8 +53,13 @@ class PersonControllerTest
 	@BeforeEach
 	void beforeEach ()
 	{
-		mockMvc = MockMvcBuilders.standaloneSetup (personController)
+		/*mockMvc = MockMvcBuilders.standaloneSetup (personController)
 				.setMessageConverters (messageConverter)
+				.setControllerAdvice(globalExceptionHandler)
+				.alwaysDo(print())
+				.build ();*/
+
+		mockMvc = MockMvcBuilders.webAppContextSetup (wac)
 				.alwaysDo(print())
 				.build ();
 	}
