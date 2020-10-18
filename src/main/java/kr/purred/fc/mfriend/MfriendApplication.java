@@ -14,16 +14,24 @@ import java.time.LocalDateTime;
 import java.util.stream.IntStream;
 
 @SpringBootApplication
-public class MfriendApplication {
+public class MfriendApplication
+{
 
-	public static void main(String[] args) {
-		SpringApplication.run(MfriendApplication.class, args);
+	public static void main (String[] args)
+	{
+		SpringApplication.run (MfriendApplication.class, args);
 	}
 
 	@Bean
-	public CommandLineRunner runner(UserRepository userRepository, BoardRepository boardRepository)
+	public CommandLineRunner runner (UserRepository userRepository, BoardRepository boardRepository)
 	{
 		return (args) -> {
+
+			for (int i = 0; i < 10; i++)
+			{
+				userRepository.save (User.builder ().name ("purred" + i).password ("test" + i).email ("purred" + i + "@gmail.com").createdDate (LocalDateTime.now ()).build ());
+			}
+
 			User user = userRepository.save (User.builder ().name ("havi").password ("test").email ("purred@gmail.com").createdDate (LocalDateTime.now ()).build ());
 
 			IntStream.rangeClosed (1, 200).forEach ((index) -> {
