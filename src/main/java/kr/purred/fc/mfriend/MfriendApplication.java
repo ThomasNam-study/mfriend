@@ -1,10 +1,5 @@
 package kr.purred.fc.mfriend;
 
-import kr.purred.fc.mfriend.domain.Board;
-import kr.purred.fc.mfriend.domain.User;
-import kr.purred.fc.mfriend.enums.BoardType;
-import kr.purred.fc.mfriend.repository.BoardRepository;
-import kr.purred.fc.mfriend.repository.UserRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -12,6 +7,14 @@ import org.springframework.context.annotation.Bean;
 
 import java.time.LocalDateTime;
 import java.util.stream.IntStream;
+
+import kr.purred.fc.mfriend.domain.Board;
+import kr.purred.fc.mfriend.domain.MyUser;
+import kr.purred.fc.mfriend.domain.User;
+import kr.purred.fc.mfriend.enums.BoardType;
+import kr.purred.fc.mfriend.repository.BoardRepository;
+import kr.purred.fc.mfriend.repository.MyUserRepository;
+import kr.purred.fc.mfriend.repository.UserRepository;
 
 @SpringBootApplication
 public class MfriendApplication
@@ -23,14 +26,16 @@ public class MfriendApplication
 	}
 
 	@Bean
-	public CommandLineRunner runner (UserRepository userRepository, BoardRepository boardRepository)
+	public CommandLineRunner runner (UserRepository userRepository, MyUserRepository myUserRepository, BoardRepository boardRepository)
 	{
 		return (args) -> {
 
 			for (int i = 0; i < 10; i++)
 			{
 				userRepository.save (User.builder ().name ("purred" + i).password ("test" + i).email ("purred" + i + "@gmail.com").createdDate (LocalDateTime.now ()).build ());
+				myUserRepository.save (MyUser.builder ().userName ("mymy" + i).password ("test" + i).userEmail ("purred" + i + "@gmail.com").createdDate (LocalDateTime.now ()).build ());
 			}
+
 
 			User user = userRepository.save (User.builder ().name ("havi").password ("test").email ("purred@gmail.com").createdDate (LocalDateTime.now ()).build ());
 

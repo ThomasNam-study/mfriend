@@ -8,26 +8,26 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-import kr.purred.fc.mfriend.domain.User;
-import kr.purred.fc.mfriend.service.UserService;
+import kr.purred.fc.mfriend.domain.MyUser;
+import kr.purred.fc.mfriend.service.MyUserService;
 import lombok.extern.slf4j.Slf4j;
 
-@RequestMapping("/api/user")
+@RequestMapping("/api/myuser")
 @RestController
 @Slf4j
-public class UserController
+public class MyUserController
 {
 	@Autowired
-	UserService userService;
+	MyUserService userService;
 
 	@GetMapping
-	public List<User> getAll ()
+	public List<MyUser> getAll ()
 	{
 		return userService.getAllUsers ();
 	}
 
 	@GetMapping("{no}")
-	public User getOne (@PathVariable ("no") Long no)
+	public MyUser getOne (@PathVariable("no") Long no)
 	{
 		return userService.getOne (no);
 	}
